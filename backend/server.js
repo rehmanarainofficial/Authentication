@@ -16,34 +16,7 @@ connectDB();
 
 app.use(cookieParser());
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:3000",
-];
-
-if (process.env.CLIENT_URL) {
-  const url = process.env.CLIENT_URL.trim().replace(/\/$/, "");
-  allowedOrigins.push(url);
-}
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      const cleanOrigin = origin.trim().replace(/\/$/, "");
-      const isAllowed = allowedOrigins.some(
-        (allowed) => allowed && allowed.trim().replace(/\/$/, "") === cleanOrigin
-      );
-      if (isAllowed) {
-        callback(null, true);
-      } else {
-        callback(new Error(`Origin ${origin} not allowed by CORS`));
-      }
-    },
-    credentials: true,
-  }),
-);
+app.use(cors({ credentials: true }));
 
 app.use(express.json());
 
